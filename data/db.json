@@ -7,10 +7,16 @@
       "body": "wkdj3hrogr3 vloy56;5uyh'56h5h4h54h54h4h85 4hsjakdfvdu5hiu5oth5h95 5h"
     },
     {
-      "id": 2,
-      "title": "New Post -Created Custom Hooks",
-      "datetime": "February 16 ,2023 9:21:41 PM",
-      "body": "After shifting from normal fetchPosts in useEffect hook we have now created our own custom hook called useAxiosFetch which gives back data."
+      "id": 3,
+      "title": "My test post 3 (Edited)",
+      "datetime": "February 17 ,2023 1:02:15 PM",
+      "body": "This is after useContext being provided with DataProvider where we pass in a lot of props through it to its children. This is edited now.  "
+    },
+    {
+      "id": 4,
+      "title": "My test 4 (edited)",
+      "datetime": "February 17 ,2023 1:14:06 PM",
+      "body": "Finally we have shifted everything to data provider component form the data context . "
     }
   ]
 }

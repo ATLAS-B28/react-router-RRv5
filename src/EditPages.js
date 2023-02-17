@@ -1,6 +1,9 @@
 import React, { useEffect } from 'react'
 import { useParams,Link } from 'react-router-dom'
-const EditPages = ({posts,editTitle,editBody,setEditTitle,setEditBody,handleUpdate}) => {
+import { useContext } from 'react'
+import DataContext from './context/DataContext'
+const EditPages = () => {
+  const {posts,editTitle,editBody,setEditTitle,setEditBody,handleUpdate} = useContext(DataContext)
   const {id} = useParams()
   const post = posts.find(post => (post.id).toString() === id)
   //we trigger useEffect with dependencies  - setEditTitle,setEditBody,post 
