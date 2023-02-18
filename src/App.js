@@ -8,59 +8,38 @@ import EditPages from "./EditPages";
 import About from "./About";
 import Missing from "./Missing";
 import { Route, Switch} from "react-router-dom";
-import { DataProvider } from "./context/DataContext";
-//dataprovider is now providing 
-//all the data,procedures,fetch and crud oprators
+import {useStoreActions} from 'easy-peasy'
+//import { DataProvider } from "./context/DataContext";
+import useAxiosFetch from "./hooks/useAxiosFetch";
+import { useEffect } from "react";
 function App() {
-  // useEffect(() => {
-  // const fetchPosts = async () => {
-  // try {
-  // const response = await api.get('/posts');
-  //setPosts(response.data);
-  //} catch (err) {
-  //if (err.response) {
-  // Not in the 200 response range
-  //console.log(err.response.data);
-  //console.log(err.response.status);
-  //console.log(err.response.headers);
-  //} else {
-  //console.log(`Error: ${err.message}`);
-  //}
-  // }
-  //}
-
-  // fetchPosts();
-  //}, [])
-  //replacing it with
-  //set the state
-  //useEffect(() => {
-    //setPosts(data);
-  //}, [data]);
-
-  
+  const setPosts = useStoreActions((actions) => actions.setPosts);
+  const {data,fetchError,isloading} = useAxiosFetch("http://localhost:3002/posts")
+  useEffect(()=>{
+      setPosts(data)
+  },[data,setPosts])
   return (
     <div className="App">
-      <DataProvider>
+      
         <Header title="React JS Blog By ACB" />
+        {/**<DataProvider>*/}
         <Nav/>
         <Switch>
           <Route exact path="/">
-            <Home/>
+           <Home
+            fetchError={fetchError}
+            isloading={isloading}
+           />
           </Route>
-          <Route exact path="/post">
-            <NewPost/>
-          </Route>
-          <Route path="/edit/:id">
-            <EditPages/>
-          </Route>
-          <Route path="/post/:id">
-            <PostPage/>
-          </Route>
+          <Route exact path="/post" component={NewPost}/>
+          <Route path="/edit/:id" component={EditPages}/>
+          <Route path="/post/:id" component={PostPage}/>
           <Route path="/about" component={About} />
           <Route path="*" component={Missing} />
         </Switch>
+        {/**</DataProvider>*/}
         <Footer />
-      </DataProvider>
+      
     </div>
   );
 }

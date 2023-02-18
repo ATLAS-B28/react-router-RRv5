@@ -1,19 +1,38 @@
 import React, { useEffect } from 'react'
-import { useParams,Link } from 'react-router-dom'
-import { useContext } from 'react'
-import DataContext from './context/DataContext'
+import { useParams,Link,useHistory } from 'react-router-dom'
+import { useStoreActions,useStoreState } from 'easy-peasy'
+import { format } from 'date-fns'
+
 const EditPages = () => {
-  const {posts,editTitle,editBody,setEditTitle,setEditBody,handleUpdate} = useContext(DataContext)
+  const history = useHistory()
   const {id} = useParams()
-  const post = posts.find(post => (post.id).toString() === id)
-  //we trigger useEffect with dependencies  - setEditTitle,setEditBody,post 
-  //we do this to set the state we look for the post ,its title and body
+  const editTitle = useStoreState((state)=>state.editTitle)
+  const editBody = useStoreState((state)=>state.editBody)
+  const getPostById = useStoreState((state)=>state.getPostById)
+  const post = getPostById(id)
+  const setEditTitle = useStoreActions((actions)=>actions.setEditTitle)
+  const setEditBody = useStoreActions((actions)=>actions.setEditBody)
+  const editPosts = useStoreActions((actions)=>actions.editPosts)
   
   useEffect(()=>{
     if(post)
     setEditTitle(post.title)
     setEditBody(post.body)
   },[post,setEditTitle,setEditBody])
+
+  const handleUpdate = (id) => {
+    //2 things are fixed
+    const datetime = format(new Date(), "MMMM dd ,yyyy pp");
+    const updatedPost = {
+      id,
+      title: editTitle,
+      datetime,
+      body: editBody,
+    };
+    editPosts(updatedPost)
+    history.push(`/post/${id}`)
+  };
+
   return (
    <main className='NewPost'>
     {editTitle
@@ -39,7 +58,7 @@ const EditPages = () => {
          onChange={e=>setEditBody(e.target.value)} 
         />
         <button 
-         type='submit' 
+         type='button' 
          onClick={()=>handleUpdate(post.id)}
          //here it will access the particular post and therefore we need
          //to pass an id unlike the submit 
